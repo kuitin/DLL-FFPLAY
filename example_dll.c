@@ -271,6 +271,7 @@ typedef struct VideoState {
     char *filename;
     int *width, *height, xleft, ytop;
     int step;
+    SDL_Rect *imgPartRect;
 
 #if CONFIG_AVFILTER
     int vfilter_idx;
@@ -343,7 +344,7 @@ static int64_t audio_callback_time;
 static AVPacket flush_pkt;
 
 #define FF_QUIT_EVENT    (SDL_USEREVENT + 2)
-static int windowsCount = 2;
+static int windowsCount = 1;
 static SDL_Window **window;
 static SDL_Renderer **renderer;
 static SDL_RendererInfo renderer_info = {0};
@@ -1042,8 +1043,12 @@ static void video_image_display(VideoState *is)
     windowsItr =  windowsCount;
     while (windowsItr --)
     {
-        
-        SDL_RenderCopyEx(renderer[windowsItr], is->vid_texture[windowsItr], NULL, &rect[windowsItr], 0, NULL, vp->flip_v ? SDL_FLIP_VERTICAL : 0);
+        SDL_Rect imgPartRect;
+        imgPartRect.x = is->imgPartRect[windowsItr].x;
+        imgPartRect.y = is->imgPartRect[windowsItr].y;
+        imgPartRect.w = is->imgPartRect[windowsItr].w;
+        imgPartRect.h = is->imgPartRect[windowsItr].h;
+        SDL_RenderCopyEx(renderer[windowsItr], is->vid_texture[windowsItr], &imgPartRect, &rect[windowsItr], 0, NULL, vp->flip_v ? SDL_FLIP_VERTICAL : 0);
     }
     set_sdl_yuv_conversion_mode(NULL);
     if (sp) {
@@ -3806,6 +3811,8 @@ __stdcall int GetIsVideoReadyToShow()
 __stdcall void* show()
 {
     SDL_SysWMinfo* info = calloc(1,sizeof(SDL_SysWMinfo));
+    
+
     SDL_GetWindowWMInfo(window[0],info);
     SDL_MinimizeWindow(window[0]);
     SDL_ShowWindow(window[0]);
@@ -3816,10 +3823,13 @@ __stdcall void* show()
 
 
 static VideoState *isCustom;
-__stdcall char* StartFFPlay(int argc,  char **argv)
+__stdcall char* StartFFPlay(int argc,  char **argv, int imgCount, int** imgPartRectSize)
 {
     int flags;
     VideoState *is;
+    
+    int imgIndex = 0;
+    windowsCount =  imgCount;
 
     init_dynload();
 
@@ -3947,7 +3957,14 @@ __stdcall char* StartFFPlay(int argc,  char **argv)
     is->sub_texture = (SDL_Texture **) calloc( windowsCount, sizeof(SDL_Texture*) );
     is->width = (int *) calloc( windowsCount, sizeof(int) );
     is->height = (int *) calloc( windowsCount, sizeof(int) );
-    
+    is->imgPartRect = (SDL_Rect *) calloc( windowsCount, sizeof(SDL_Rect) );
+     while (imgIndex < imgCount) {        
+        is->imgPartRect[imgIndex].x = imgPartRectSize[imgIndex][0];
+        is->imgPartRect[imgIndex].y = imgPartRectSize[imgIndex][1];
+        is->imgPartRect[imgIndex].w = imgPartRectSize[imgIndex][2];
+        is->imgPartRect[imgIndex].h = imgPartRectSize[imgIndex][3];
+        imgIndex++;
+    }
 	event_loop(is);
         return "exit video\n";
 }

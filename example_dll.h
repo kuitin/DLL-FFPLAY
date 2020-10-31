@@ -7,7 +7,7 @@
 int __declspec(dllexport) GetIsVideoReadyToShow();
 void* __declspec(dllexport) show();
 
-char* __declspec(dllexport) StartFFPlay(int argc,  char **argv);
+char* __declspec(dllexport) StartFFPlay(int argc,  char **argv, int imgCount, int** imgPartRect);
 
 void __declspec(dllexport) KillVideo();
 
