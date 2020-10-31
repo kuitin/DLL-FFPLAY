@@ -3808,16 +3808,14 @@ __stdcall int GetIsVideoReadyToShow()
     return IsVideoReadyToShow;
 }
 #include "SDL_syswm.h"
-__stdcall void* show()
+__stdcall void* show(int windowsID)
 {
     SDL_SysWMinfo* info = calloc(1,sizeof(SDL_SysWMinfo));
     
-
-    SDL_GetWindowWMInfo(window[0],info);
-    SDL_MinimizeWindow(window[0]);
-    SDL_ShowWindow(window[0]);
-   SDL_MinimizeWindow(window[1]);
-   SDL_ShowWindow(window[1]);
+    int windowsitr= windowsID -1;
+    SDL_GetWindowWMInfo(window[windowsitr],info);
+    SDL_MinimizeWindow(window[windowsitr]);
+    SDL_ShowWindow(window[windowsitr]);
     return info->info.win.window;
 }
 
