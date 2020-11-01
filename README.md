@@ -1,7 +1,7 @@
 # DLLFFPLAY  
 
 Use to use FFPLAY as dll.  
-You can show the same view in different windows and resize this windows (see WPF example)  
+You can show the same view in different windows and resize this windows (see WPF c# example)  
 
 Step to start:  
 1-download the project https://github.com/m-ab-s/media-autobuild_suite and build the ffmpeg with your settings (here I used LGPL x86 64 bits)  
@@ -11,6 +11,6 @@ Step to start:
 cd build  
 make  
 
-You can generate a video stream with obs in avi , h246 in localhost to make some test.  
+You can generate a video stream with obs in avi , h246 in localhost to make some test .  
 
 
