@@ -1,0 +1,35 @@
+﻿<Window x:Class="testrunff.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:testrunff"
+        mc:Ignorable="d"
+        Closed="Window_Closed"
+        Loaded="On_UIReady"
+        Title="MainWindow" Height="900" Width="1800" MinHeight="500" MinWidth="1200">
+    <TabControl SelectionChanged="TabControl_SelectionChanged" >
+        <TabItem Header="control"  >
+            <Grid x:Name="mygrid">
+                <StackPanel Orientation="Vertical">
+                    <Button Name="PlayFFplay" Content="Play" Width="50" Height="20" Click="PlayFFplay_Click"></Button>
+                    <Button Name="StopFFplay" Content="Stop" Width="50" Height="20" Click="StopFFplay_Click"></Button>
+                    <Border Name="ControlHostElement2" ></Border>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        <TabItem Name="videoTab" Header="video" IsVisibleChanged="TabItem_IsVisibleChanged">
+            <Grid x:Name="mygrid2" SizeChanged="ControlHostElement_SizeChanged">
+                
+                <StackPanel  Name="StackPanelElement" Orientation="Vertical">
+                    <!--<Canvas>-->
+                    <Border Name="ControlHostElement" Width="500" Height="200"></Border>
+                    <Border Name="ControlHostElement3" Width="500" Height="200"></Border>
+
+                    <!--</Canvas>-->
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+   
+</Window>

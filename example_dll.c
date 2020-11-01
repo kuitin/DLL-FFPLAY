@@ -1446,11 +1446,13 @@ static int video_open(VideoState *is)
             SDL_SetWindowFullscreen(window[windowsItr], SDL_WINDOW_FULLSCREEN_DESKTOP);
          // SDL_MinimizeWindow(window[windowsItr]);
         // SDL_ShowWindow(window[windowsItr]);
-         IsVideoReadyToShow = 1;
+        
         is->width[windowsItr]  = w;
         is->height[windowsItr] = h;
     }
-   
+      av_log(NULL, AV_LOG_FATAL,
+               "video_open Video run.\n");
+    IsVideoReadyToShow = 1;
    
 
     return 0;
@@ -3920,6 +3922,8 @@ __stdcall char* StartFFPlay(int argc,  char **argv, int imgCount, int** imgPartR
             flags |= SDL_WINDOW_BORDERLESS;
         else
             flags |= SDL_WINDOW_RESIZABLE;
+        av_log(NULL, AV_LOG_FATAL,
+               "FFPLAY START Initialize windows  '%d'.\n", windowsCount);
         window = (SDL_Window **) calloc( windowsCount, sizeof(SDL_Window*) );
         renderer = (SDL_Renderer **) calloc( windowsCount, sizeof(SDL_Renderer*) );
         int windowsItr = windowsCount;
@@ -3963,6 +3967,8 @@ __stdcall char* StartFFPlay(int argc,  char **argv, int imgCount, int** imgPartR
         is->imgPartRect[imgIndex].h = imgPartRectSize[imgIndex][3];
         imgIndex++;
     }
+      av_log(NULL, AV_LOG_FATAL,
+               "FFPLAY START end INIT.\n");
 	event_loop(is);
         return "exit video\n";
 }
